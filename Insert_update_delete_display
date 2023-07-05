@@ -1,0 +1,109 @@
+
+package javaapplication2;
+import java.util.Scanner;
+import java.sql.PreparedStatement;
+import java.sql.*;  
+public class JavaApplication2{  
+    static final String url = "jdbc:mysql://localhost/mca_b";
+    public static void main(String args[])throws ClassNotFoundException{  
+            Scanner sc=new Scanner(System.in);
+           //lass.forName("com.mysql.jdbc.Driver");  
+            //Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mca_b","root","");
+           do{
+                System.out.println("----------------------------------------");
+                System.out.println("*****************MENU********************");
+                System.out.println("------------------------------------------");
+                System.out.println("\n 1.Insert\n 2.Update \n 3.Delete \n 4.Display \n5.Exit");
+                System.out.println("Enter your choice..");
+                int value=sc.nextInt();
+                switch(value){
+                    case 1:try{ Class.forName("com.mysql.jdbc.Driver");  
+                                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mca_b","root","");
+                                Statement stmt = con.createStatement();
+                                System.out.println("Enter the value for insert: ");
+                                System.out.println("Enter the name: ");
+                                String name1=sc.next();
+                                System.out.println("Enter the Roll: ");
+                                int roll=sc.nextInt();
+                                System.out.println("Enter the title: ");
+                                String name2=sc.next();
+                                int result = stmt.executeUpdate("insert into student(F_name,L_name,Roll) values('"+name1+"','"+name2+"','"+roll+"')");
+                                if (result > 0)
+                                        System.out.println("successfully inserted");
+                                else
+                                        System.out.println( "unsucessful insertion ");
+                                        con.close();
+                            }catch (SQLException e) {
+                                System.out.println(e);
+                             }
+                             break;
+                    case 2:try{ Class.forName("com.mysql.jdbc.Driver");  
+                                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mca_b","root","");
+                                Statement stmt = con.createStatement();
+                                System.out.println("Enter the id for update: ");
+                                int id=sc.nextInt();
+                                System.out.println("Enter the name: ");
+                                String name1=sc.next();
+                                System.out.println("Enter the Roll: ");
+                                int roll=sc.nextInt();
+                                System.out.println("Enter the title: ");
+                                String name2=sc.next();
+                                int result = stmt.executeUpdate("update student set F_name='"+name1+"',L_name='"+name2+"',Roll='"+roll+"' where id="+id);
+                                if (result > 0)
+                                        System.out.println("successfully update");
+                                else
+                                        System.out.println( "unsucessful update");
+                                        con.close();
+                            }catch (SQLException e) {
+                                System.out.println(e);
+                             }
+                             break;
+                    case 3:try{ Class.forName("com.mysql.jdbc.Driver");  
+                                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mca_b","root","");
+                                //Statement stmt=con.createStatement();
+                                System.out.println("Enter the id: ");
+                                int value2=sc.nextInt();
+//                                Result =stmt.executeQuery("delete from student where id="+value2);
+
+                                     String deleteQuery = "DELETE FROM student WHERE id = ?";
+                                    PreparedStatement statement = con.prepareStatement(deleteQuery);
+
+                                 // Set the ID parameter
+                                statement.setInt(1, value2);
+
+                                 // Execute the delete statement
+                                 int rowsAffected = statement.executeUpdate();
+
+                                if (rowsAffected > 0) {
+                                         System.out.println("Record deleted successfully.");
+                                } else {
+                                        System.out.println("No record found with the specified ID.");
+                                 }
+                                    con.close();  
+                            }catch(SQLException e){ 
+                                System.out.println(e);
+                            }
+                            break;
+                    case 4:try{ Class.forName("com.mysql.jdbc.Driver");  
+                                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mca_b","root","");
+                                Statement stmt=con.createStatement();
+                                System.out.println("Enter the id : ");
+                                int value1=sc.nextInt();
+                                ResultSet rs=stmt.executeQuery("select * from student where id="+value1);
+                                while(rs.next())  
+                                    System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"    "+rs.getInt(4));  
+                            con.close();  
+                            }catch(SQLException e){ 
+                                System.out.println(e);
+                            }
+                            break;
+                    case 5:break;
+                    default:System.out.println("Invalid OPtion|");
+                        break;
+                }
+                
+            } while(5>=10);
+        System.out.println("-------------------------------------------------------");
+    }  
+}  
+
